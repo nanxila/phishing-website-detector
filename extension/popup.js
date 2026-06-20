@@ -16,17 +16,36 @@ function(tabs){
 
 document
 .getElementById("analyzeBtn")
-.addEventListener("click", () => {
-
-    let result = "Legitimate";
-
-    if (
-        currentUrl.includes("@") ||
-        currentUrl.length > 75
-    ) {
-        result = "Suspicious";
-    }
+.addEventListener("click", async () => {
 
     document.getElementById("result")
-        .textContent = result;
+        .textContent = "Analyzing...";
+
+    try {
+
+        const response = await fetch(
+            "http://127.0.0.1:5000/predict",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    url: currentUrl
+                })
+            }
+        );
+
+        const data = await response.json();
+
+        document.getElementById("result")
+            .textContent =
+            data.prediction;
+
+    } catch(error){
+
+        document.getElementById("result")
+            .textContent =
+            "Backend not running";
+    }
 });
