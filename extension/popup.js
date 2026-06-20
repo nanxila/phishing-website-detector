@@ -18,7 +18,15 @@ document
 .getElementById("analyzeBtn")
 .addEventListener("click", () => {
 
+    let result = "Legitimate";
+
+    if (
+        currentUrl.includes("@") ||
+        currentUrl.length > 75
+    ) {
+        result = "Suspicious";
+    }
+
     document.getElementById("result")
-        .textContent =
-        "Analysis coming soon...";
+        .textContent = result;
 });
